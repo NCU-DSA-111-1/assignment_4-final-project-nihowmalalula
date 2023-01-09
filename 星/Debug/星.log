@@ -1,0 +1,5 @@
+﻿  main.c
+C:\ken\中央大學\大二上學期\資料結構 Data Structure\各種程式\星\星\main.c(582,7): warning C4101: 'rolenum': 未參考的區域變數
+C:\ken\中央大學\大二上學期\資料結構 Data Structure\各種程式\星\星\main.c(610): warning C4715: 'choose_role': 不是所有控制路徑都傳回值
+C:\ken\中央大學\大二上學期\資料結構 Data Structure\各種程式\星\星\main.c(1166): warning C4715: 'update_holt': 不是所有控制路徑都傳回值
+  星.vcxproj -> C:\ken\中央大學\大二上學期\資料結構 Data Structure\各種程式\星\Debug\星.exe
