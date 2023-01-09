@@ -445,23 +445,17 @@ int keybord_control(COORD* current_xy)
 		{
 			if (count_space_key == SHOOT_HOW_FAST)		//用SHOOT_HOW_FAST決定要射多快
 			{
-				if (mp >= 1)		//先暫定有魔力才可發射?(
-				{
-					generate_bullet(current_xy, 1);   //已經是指針就不用再傳遞地址
-				}
+				generate_bullet(current_xy, 1);   //已經是指針就不用再傳遞地址
 				count_space_key = 0;
 			}
-			//count_space_key++;		//把這個變數改到外面
+			count_space_key++;		//把這個變數改到外面
 
 		}
 		else if (GetAsyncKeyState(0x28))//方向鍵下攻擊
 		{
 			if (count_space_key == SHOOT_HOW_FAST)
 			{
-				if (mp >= 1)		//先暫定有魔力才可發射?(
-				{
-					generate_bullet(current_xy, 2);   //已經是指針就不用再傳遞地址
-				}
+				generate_bullet(current_xy, 2);   //已經是指針就不用再傳遞地址
 				count_space_key = 0;
 			}
 			count_space_key++;
@@ -471,10 +465,7 @@ int keybord_control(COORD* current_xy)
 		{
 			if (count_space_key == SHOOT_HOW_FAST)
 			{
-				if (mp >= 1)		//先暫定有魔力才可發射?(
-				{
-					generate_bullet(current_xy, 3);   //已經是指針就不用再傳遞地址
-				}
+				generate_bullet(current_xy, 3);   //已經是指針就不用再傳遞地址
 				count_space_key = 0;
 			}
 			count_space_key++;
@@ -484,10 +475,7 @@ int keybord_control(COORD* current_xy)
 		{
 			if (count_space_key == SHOOT_HOW_FAST)
 			{
-				if (mp >= 1)		//先暫定有魔力才可發射?(
-				{
 					generate_bullet(current_xy, 4);   //已經是指針就不用再傳遞地址
-				}
 				count_space_key = 0;
 			}
 			count_space_key++;
