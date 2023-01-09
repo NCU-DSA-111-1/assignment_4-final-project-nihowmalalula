@@ -685,7 +685,7 @@ void print_character(COORD* current_xy, int rolechoice) {
 		}
 	}
 	old_character_pos = xy;
-	if (invincible_time != 0) {
+	if (invincible_time != 0 && health != 0) {
 		SetColor(invincible_time);
 	}
 	for (int i = 0, j = 3; i < 3, j < 6; i++, j++) {
