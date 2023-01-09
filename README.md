@@ -6,5 +6,5 @@ wasd to move the character</br>
 ↑ ↓ ← → to shoot in combat</br> 
 space to talk to npc</br> 
 ENJOY IT !  </br>
-#enviroment
+# enviroment
 visual studio 2019
