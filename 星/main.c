@@ -213,7 +213,7 @@ void show_Holt_health(COORD* current_xy)
 		SetColor(4);
 		printf("▇");
 	}
-	if (holt.hp == 0) {
+	if (holt.hp <= 0) {
 		COORD text_pos;
 		text_pos.X = 40;
 		text_pos.Y = 24;
@@ -610,6 +610,18 @@ int exceed_map(COORD* current_xy) {
 	}
 	if (current_xy->Y < 1) {
 		current_xy->Y = 1;
+	}
+	if (holt.pos.X > 104) {
+		holt.pos.X = 104;
+	}
+	if (holt.pos.X < 2) {
+		holt.pos.X = 2;
+	}
+	if (holt.pos.Y > 24) {
+		holt.pos.Y = 24;
+	}
+	if (holt.pos.Y < 1) {
+		holt.pos.Y = 1;
 	}
 	return 0;
 }
