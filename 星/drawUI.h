@@ -1,4 +1,4 @@
-﻿#define STORY_TEXT_TIME 2500
+#define STORY_TEXT_TIME 2500
 #define GROUND_Y_POSITION 20
 void show_meteor();
 void story_text();
