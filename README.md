@@ -5,6 +5,7 @@ second choose your profession (要按英文字母上面的數字鍵，不要按�
 wasd to move the character</br> 
 ↑ ↓ ← → to shoot in combat</br> 
 space to talk to npc</br> 
+use 'q' and 'e' to unable and enable the sill to increase damage </br>
 ENJOY IT !  </br>
 # enviroment
 visual studio 2019
