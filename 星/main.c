@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 #include <mmsystem.h>
@@ -63,6 +63,7 @@ int map1_exceed_agree;
 int holtchat;
 int invincible_time = 0;
 int skillone;
+int story_agree;
 
 int main() {
 	srand((unsigned int)time(NULL));
@@ -88,11 +89,15 @@ void game_start() {
 	map1_exceed_agree = 1;
 	holtchat = 1;
 	skillone = 0;
+	story_agree = 1;
 	generate_holt();
 	while (1) {
 		if (map1_agree == 1) {//地圖一
 			back_ground2();
-			//story2_print();
+			if (story_agree == 1) {
+				story2_print();
+				story_agree = 0;
+			}
 			map1_agree = 0;
 		}
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), time_xy);//時間
@@ -104,12 +109,19 @@ void game_start() {
 		}
 		if (battle_agree == 1) {
 			print_holt();
+			if (GetAsyncKeyState(0x45) && mp > 0) {
+				skillone = 1;
+			}
+			if (GetAsyncKeyState(0x51)) {
+				skillone = 0;
+			}
 			show_Holt_health(&current_xy);
 			update_holt(&current_xy);
 		}
 		if (map1_exceed_agree == 1) {
 			exceed_map1(&current_xy);//圖一邊界判定
 		}
+
 		print_character(&current_xy, rolechoice);
 		print_all(&current_xy);
 		if ((bullet_amount) >= 1)
@@ -176,11 +188,16 @@ void show_health(COORD* current_xy)
 		printf("                           ");
 		current_xy->X = 72;
 		current_xy->Y = 19;
-		back_ground2();
 		battle_agree = 0;
 		Holt_chat_agree = 1;
 		health = 6; //預設改成current_health
 		mp = 10;
+		invincible_time = 0;
+		map1_exceed_agree = 1;
+		map1_agree = 1;
+		judge_bullet();
+		back_ground2();
+		generate_holt();//重新設定霍特的血量
 	}
 	printf("\n");
 	SetColor(7);
@@ -224,12 +241,16 @@ void show_Holt_health(COORD* current_xy)
 		printf("                           ");
 		current_xy->X = 72;
 		current_xy->Y = 19;
-		back_ground2();
 		map1_exceed_agree = 1;
 		battle_agree = 0;
 		holtchat = 2;
+		map1_exceed_agree = 1;
 		Holt_chat_agree = 1;
+		map1_agree = 1;
 		mp = 10;
+		judge_bullet();
+		back_ground2();
+
 	}
 	SetColor(7);
 }
@@ -431,12 +452,7 @@ int keybord_control(COORD* current_xy)
 	down = GetAsyncKeyState(0x28);
 	left = GetAsyncKeyState(0x25);
 	right = GetAsyncKeyState(0x27);
-	if (GetAsyncKeyState(0x45) && mp > 0) {
-		skillone = 1;
-	}
-	if (GetAsyncKeyState(0x51)) {
-		skillone = 0;
-	}
+
 	//2023/01/06子彈更新_多方向攻擊
 	if (battle_agree == 1) {
 		if (count_space_key < SHOOT_HOW_FAST)		//如果沒等於SOOT_HOW_FAST就加一
@@ -475,7 +491,7 @@ int keybord_control(COORD* current_xy)
 		{
 			if (count_space_key == SHOOT_HOW_FAST)
 			{
-					generate_bullet(current_xy, 4);   //已經是指針就不用再傳遞地址
+				generate_bullet(current_xy, 4);   //已經是指針就不用再傳遞地址
 				count_space_key = 0;
 			}
 			count_space_key++;
@@ -575,7 +591,7 @@ int choose_role() {
 	Sleep(2000);
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), choose_role_text);
 	printf("5秒內按下1.「戰士」; 按下2.「遊俠」:  ");
-	Sleep(2000);
+	Sleep(5000);
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), choose_role_text);
 	printf("                                      ");
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), choose_role_text);
@@ -633,9 +649,9 @@ int exceed_map1(COORD* current_xy) {
 	if (current_xy->Y < 16) {
 		current_xy->Y = 16;
 	}
-	for (int i = 0; i < 25; i++) {
-		if ((current_xy->X == (3 + i)) && (current_xy->Y == 21)) {
-			current_xy->X = (3 + i);
+	for (int i = 0; i < 26; i++) {
+		if ((current_xy->X == (2 + i)) && (current_xy->Y == 21)) {
+			current_xy->X = (2 + i);
 			current_xy->Y = 22;
 		}
 	}
@@ -652,8 +668,14 @@ int exceed_map1(COORD* current_xy) {
 		}
 	}
 	for (int i = 0; i < 16; i++) {
-		if ((current_xy->X == (75 + i)) && (current_xy->Y == 18)) {
-			current_xy->X = (75 + i);
+		if ((current_xy->X == (69 + i)) && (current_xy->Y == 18)) {
+			current_xy->X = (69 + i);
+			current_xy->Y = 19;
+		}
+	}
+	for (int i = 0; i < 8; i++) {
+		if ((current_xy->X == (83 + i)) && (current_xy->Y == 18)) {
+			current_xy->X = (83 + i);
 			current_xy->Y = 19;
 		}
 	}
@@ -744,6 +766,10 @@ void JUDGE_bullet_function(struct bullet_pos** first_bullet, int* bullet_amount)
 	while (current_bullet != NULL)
 	{
 		condition = 0;		//每次記得歸零
+		//撞到霍特
+		if (battle_agree == 0) {
+			condition = 3;
+		}
 		if (holt.pos.X + 10 >= current_bullet->pos.X && current_bullet->pos.X >= holt.pos.X - 2 && holt.pos.Y + 3 >= current_bullet->pos.Y && current_bullet->pos.Y >= holt.pos.Y - 1) {		//撞到人
 			condition = 2;
 			holt.hp -= current_bullet->damage;
